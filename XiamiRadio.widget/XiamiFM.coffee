@@ -1,15 +1,19 @@
+# Execute the shell command.
 command: "osascript XiamiRadio.widget/GetXiami.applescript"
 
+
+# Set the refresh frequency (milliseconds).
 refreshFrequency: 1000
 
+# Render the output.
 render: (output) -> """
   <table id='xiamiradio'></table>
 """
 
+# Update the rendered output.
 update: (output, domEl) -> 
   dom = $(domEl)
   
-  # Parse the JSON
   data = JSON.parse output
   html = ""
   
@@ -17,18 +21,26 @@ update: (output, domEl) ->
     data.title = "Not Playing"
   if data.artist == ""
     data.title = "Nothing"
-
+  if data.data != "missing value"
+    now_playing = JSON.parse data.data
+    data.title = now_playing.songName
+    data.artist = now_playing.artist
+    data.image = now_playing.cover_url
+  
   html += "<td class='service'>" 
 
   html += "  <p class='caption'>"+"Now Playing"+"</p>" 
-  html += "  <p class='primaryInfo marquee'><span>"+data.title+"</span></p>" 
-
+  html += "  <p class='caption'><img src='"+data.image+"'></img></p>" 
+  html += "  <p class='primaryInfo' id='song-title'><span>"+data.title+"</span></p>" 
   html += "  <p class='secondaryInfo'>"+data.artist+"</p>"
   html += "</td>"
   
+  # Set output.
   $(xiamiradio).html(html)
 
-# CSS Style
+afterRender: (domEl) ->
+  $(domEl).on 'click', '#song-title', => @run "osascript XiamiRadio.widget/NextSong.applescript"
+
 style: """
   margin:0
   padding:0px
@@ -67,5 +79,10 @@ style: """
     font-size:15pt
     color: rgba(#000, 0.5)
   
+  img
+    margin: 4px
+    padding: 0px
+    border:3px solid rgba(#000, .25)
+    border-radius:10px
   
 """
