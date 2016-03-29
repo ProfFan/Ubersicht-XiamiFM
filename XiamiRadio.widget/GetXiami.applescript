@@ -106,6 +106,7 @@ tell application "Google Chrome Canary"
 				set the_title to ((characters 1 thru -11 of the_title) as string) # concatenate then all
 				tell the_tab
 					set the_artist to execute javascript "document.querySelector(\".artist_info strong\").textContent"
+					set the_data to execute javascript "document.head.attributes.getNamedItem('data-nowplaying').value"
 				end tell
 			end if
 		end repeat
@@ -114,7 +115,7 @@ tell application "Google Chrome Canary"
 end tell
 
 if the_title is not "" and the_artist is not "" then
-	encode(createDictWith({{"title", the_title as string}, {"artist", the_artist as string}}))
+	encode(createDictWith({{"title", the_title as string}, {"artist", the_artist as string}, {"data", the_data as string}}))
 else
 	encode(createDictWith({{"title", ""}, {"artist", ""}}))
 end if
