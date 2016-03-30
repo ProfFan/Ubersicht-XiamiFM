@@ -117,5 +117,5 @@ end tell
 if the_title is not "" and the_artist is not "" then
 	encode(createDictWith({{"title", the_title as string}, {"artist", the_artist as string}, {"data", the_data as string}}))
 else
-	encode(createDictWith({{"title", ""}, {"artist", ""}}))
+	encode(createDictWith({{"title", ""}, {"artist", ""}, {"data", ""}}))
 end if
