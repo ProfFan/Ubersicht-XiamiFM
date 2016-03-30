@@ -16,26 +16,31 @@ update: (output, domEl) ->
   
   data = JSON.parse output
   html = ""
-  
   if data.artist == "missing value"
     data.title = "Not Playing"
   if data.artist == ""
     data.title = "Nothing"
-  if data.data != "missing value"
+  if data.data != "missing value" && data.data != "undefined" && data.data != ""
     now_playing = JSON.parse data.data
     data.title = now_playing.songName
     data.artist = now_playing.artist
     data.image = now_playing.cover_url
+  else
+    data.image = "http://img.xiami.net/images/album/img60/6860/4621161415687934_2.jpg"
+    data.artist = "Solitude is your friend"
   
   html += "<td class='service'>" 
 
+  
   html += "  <p class='caption'>"+"Now Playing"+"</p>" 
   html += "  <p class='caption'><img src='"+data.image+"'></img></p>" 
   html += "  <p class='primaryInfo' id='song-title'><span>"+data.title+"</span></p>" 
+
+  
   html += "  <p class='secondaryInfo'>"+data.artist+"</p>"
   html += "</td>"
   
-  # Set output.
+  # Set our output.
   $(xiamiradio).html(html)
 
 afterRender: (domEl) ->
