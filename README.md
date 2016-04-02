@@ -8,6 +8,8 @@ Screenshot:
 
 ![screenshot](Screenshot.png)
 
+欢迎提交Pull Request！
+
 # Usage
 
 First, install Tampermonkey on your Chrome or Chrome Canary.
